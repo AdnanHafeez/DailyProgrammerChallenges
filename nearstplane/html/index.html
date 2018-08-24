@@ -1,8 +1,35 @@
-<!DOCTYPE html>
 <html>
-<script src="./script.js"></script>
 <body>
+  <script>
+  function getData()  {
+
+    const http = new XMLHttpRequest();
+    const url = '/data';
+    console.log("Sending the request");
+    //Send the proper header information along with the request
+    //http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    document.getElementById("data").innerHTML = "Getting the Data....";
+    http.onreadystatechange = function() {
+      if(http.readyState == 4 && http.status == 200) {
+          //console.log(http.responseText);
+          GenerateTable(http.responseText);
+        };
+      };
+      http.open("GET", url , true);
+      http.send();
+  }
+
+  function GenerateTable(data){
+    console.log("Number of data = " + data.length);
+    data = JSON.parse(data);
+    //console.log(data["states"]);
+    document.getElementById("data").innerHTML = data["states"][0];
+
+  }
+
+  </script>
 <h1>Getting the plane data for Australia from OpenSky Network API</h1>
 <button type="button" onclick="getData()">Get Plane Data</button>
+<h3 id="data"></h3>
 </body>
 </html>
